@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/cubit/get_weather_cubit_cubit.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/pages/search_page.dart';
-import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/widgets/custom_text.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,8 +23,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final weatherProvider = Provider.of<WeatherProvider>(context);
-    weatherData = weatherProvider.weatherDate;
 
     return Scaffold(
       appBar: AppBar(
@@ -41,9 +41,19 @@ class _HomePageState extends State<HomePage> {
         ],
         title: const CustomText(text: "Weather App"),
       ),
-      body: weatherData == null
-          ? NoWeatherBody()
-          : WeatherBody(weatherData: weatherData, weatherProvider: weatherProvider),
+      body: BlocBuilder<GetWeatherCubit, WeatherState>(
+        builder: (context, state) {
+          if(state is WeatherInitial){
+          return const NoWeatherBody();
+          }
+          else if(state is WeatherLoadedState){
+            return WeatherInfoBody();
+          }
+          else{
+            return const Text("oops there was  an error");
+          }
+        },
+      ),
     );
   }
 }
@@ -51,25 +61,23 @@ class _HomePageState extends State<HomePage> {
 
 // Weather Body
 
-class WeatherBody extends StatelessWidget {
-  const WeatherBody({
+class WeatherInfoBody extends StatelessWidget {
+  const WeatherInfoBody({
     super.key,
-    required this.weatherData,
-    required this.weatherProvider,
+  
   });
 
-  final WeatherModel? weatherData;
-  final WeatherProvider weatherProvider;
 
   @override
   Widget build(BuildContext context) {
+    var weatherModel=BlocProvider.of<GetWeatherCubit>(context).weatherModel;
     return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              weatherData!.getThemeColor(),
-              weatherData!.getThemeColor()[300]!,
-              weatherData!.getThemeColor()[100]!,
+              weatherModel.getThemeColor(),
+              weatherModel.getThemeColor()[300]!,
+              weatherModel.getThemeColor()[100]!,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -81,7 +89,7 @@ class WeatherBody extends StatelessWidget {
             const Spacer(flex: 3),
             Expanded(
               child: CustomText(
-                text: weatherProvider.cityName ?? 'Unknown City',
+                text: weatherModel.cityName ?? 'Unknown City',
                 style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
@@ -91,16 +99,16 @@ class WeatherBody extends StatelessWidget {
             Expanded(
               child: CustomText(
                 text:
-                    'updated at : ${weatherData!.date.hour.toString()}:${weatherData!.date.minute.toString()}',
+                    'updated at : ${weatherModel.date.hour.toString()}:${weatherModel.date.minute.toString()}',
                 style: const TextStyle(fontSize: 22)),
             ),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Image.asset(weatherData!.getImage()),
+            weatherModel.image!=null? Image.network( "https:${weatherModel.image}"):   Image.asset(weatherModel.getImage()),
                 CustomText(
-                  text: weatherData!.temp.toInt().toString(),
+                  text: weatherModel.temp.toInt().toString(),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 32,
@@ -109,16 +117,16 @@ class WeatherBody extends StatelessWidget {
                 Column(
                   children: [
                     CustomText(
-                        text: 'maxTemp:${weatherData!.maxTemp.toInt()}'),
+                        text: 'maxTemp:${weatherModel.maxTemp.toInt()}'),
                     CustomText(
-                        text: 'minTemp : ${weatherData!.minTemp.toInt()}'),
+                        text: 'minTemp : ${weatherModel.minTemp.toInt()}'),
                   ],
                 )
               ],
             ),
             const Spacer(),
             CustomText(
-              text: weatherData!.weatherStateName,
+              text: weatherModel.weatherCondition,
               style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
