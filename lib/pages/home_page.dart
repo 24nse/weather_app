@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:weather_app/cubit/get_weather_cubit_cubit.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/pages/search_page.dart';
@@ -75,9 +74,9 @@ class WeatherInfoBody extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              weatherModel.getThemeColor(),
-              weatherModel.getThemeColor()[300]!,
-              weatherModel.getThemeColor()[100]!,
+              weatherModel!.getThemeColor(),
+              weatherModel!.getThemeColor()[300]!,
+              weatherModel!.getThemeColor()[100]!,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,

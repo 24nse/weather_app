@@ -25,9 +25,13 @@ class _SearchPageState extends State<SearchPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
             onSubmitted: (value) async {
-           var getWeatherCubit  = BlocProvider.of<GetWeatherCubit>(context);
+            
+                    var getWeatherCubit  = BlocProvider.of<GetWeatherCubit>(context);
            getWeatherCubit.getWeather(cityName: value);
-              Navigator.pop(context);
+              Navigator.maybePop(context);
+              
+            
+       
             
             },
             decoration: InputDecoration(
