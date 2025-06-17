@@ -5,7 +5,9 @@ sealed class WeatherState {}
 
 final class WeatherInitial extends WeatherState {}
 final class WeatherLoadedState extends WeatherState {
+  final WeatherModel weather;
 
+  WeatherLoadedState( this.weather);
 }
 final class WeatherFailureState extends WeatherState {
  final String errMessage;

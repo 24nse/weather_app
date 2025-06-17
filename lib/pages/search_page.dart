@@ -20,7 +20,8 @@ class SearchPage extends StatelessWidget {
           child: TextField(
             onSubmitted: (value) async {
            var getWeatherCubit  = BlocProvider.of<GetWeatherCubit>(context);
-           getWeatherCubit.getWeather(cityName: value);
+        await   getWeatherCubit.getWeather(cityName: value);
+  
            Navigator.maybePop(context);
             },
             decoration: InputDecoration(

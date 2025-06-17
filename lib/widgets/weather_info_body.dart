@@ -2,14 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/cubit/get_weather_cubit_cubit.dart';
+import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/widgets/custom_text.dart';
 
 class WeatherInfoBody extends StatelessWidget {
-  const WeatherInfoBody({super.key});
-
+  const WeatherInfoBody({super.key, required this.weatherModel});
+ final WeatherModel weatherModel; 
   @override
   Widget build(BuildContext context) {
-    var weatherModel = BlocProvider.of<GetWeatherCubit>(context).weatherModel;
+    
     return weatherModel == null
         ? const Center(child: CircularProgressIndicator())
         : Container(
