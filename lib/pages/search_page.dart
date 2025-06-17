@@ -3,17 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/cubit/get_weather_cubit_cubit.dart';
 import 'package:weather_app/widgets/custom_text.dart';
 
-class SearchPage extends StatefulWidget {
-  final VoidCallback? updateUi;
+class SearchPage extends StatelessWidget {
+
   
-  const SearchPage({super.key, this.updateUi});
+  const SearchPage({super.key,});
 
-  @override
-  State<SearchPage> createState() => _SearchPageState();
-}
-
-class _SearchPageState extends State<SearchPage> {
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,14 +19,9 @@ class _SearchPageState extends State<SearchPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
             onSubmitted: (value) async {
-            
-                    var getWeatherCubit  = BlocProvider.of<GetWeatherCubit>(context);
+           var getWeatherCubit  = BlocProvider.of<GetWeatherCubit>(context);
            getWeatherCubit.getWeather(cityName: value);
-              Navigator.maybePop(context);
-              
-            
-       
-            
+           Navigator.maybePop(context);
             },
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(

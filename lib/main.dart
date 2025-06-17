@@ -4,12 +4,9 @@ import 'package:weather_app/cubit/get_weather_cubit_cubit.dart';
 import 'package:weather_app/pages/home_page.dart';
 
 void main() {
-  runApp(
-
-     const WeatherApp(),
-  
-  );
+  runApp(const WeatherApp());
 }
+
 class WeatherApp extends StatelessWidget {
   const WeatherApp({super.key});
 
@@ -24,7 +21,12 @@ class WeatherApp extends StatelessWidget {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
-                  primarySwatch: context.read<GetWeatherCubit>().weatherModel?.getThemeColor() ?? Colors.blue,
+                  primarySwatch:
+                      context
+                          .read<GetWeatherCubit>()
+                          .weatherModel
+                          ?.getThemeColor() ??
+                      Colors.blue,
                 ),
                 home: const HomePage(),
               );
