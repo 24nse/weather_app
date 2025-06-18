@@ -1,7 +1,7 @@
 // Weather Body
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_app/cubit/get_weather_cubit_cubit.dart';
+import 'package:weather_app/viewmodel/cubit/get_weather_cubit_cubit.dart';
 import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/widgets/custom_text.dart';
 
